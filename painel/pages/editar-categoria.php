@@ -1,4 +1,5 @@
 <?php 
+//AO CLICAR EM EDITAR NA PAGINA GERENCIAR-NOTICIAS
 	if(isset($_GET['id'])){//se existir o id
 		$id = (int)$_GET['id'];//transforma o id em inteiro
 		$categoria = Painel::select('tb_site.categorias','id = ?',array($id));

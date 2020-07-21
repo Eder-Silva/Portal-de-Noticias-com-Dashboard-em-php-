@@ -1,17 +1,22 @@
 <?php
+//FUNÇÃO PARA CLICAR EM EXCLUIR(EXISTIR GET EXCLUIR)
 	if(isset($_GET['excluir'])){
-		$idExcluir = intval($_GET['excluir']);
+		$idExcluir = intval($_GET['excluir']);//pegar o id e converter para inteiro
+		//selecionar a imagem(capa) do id da noticia passada
 		$selectImagem = MySql::conectar()->prepare("SELECT capa FROM `tb_site.noticias` WHERE id = ?");
 		$selectImagem->execute(array($_GET['excluir']));
 
-		$imagem = $selectImagem->fetch()['capa'];
-		Painel::deleteFile($imagem);
-		Painel::deletar('tb_site.noticias',$idExcluir);
-		Painel::redirect(INCLUDE_PATH_PAINEL.'gerenciar-noticias');
+		$imagem = $selectImagem->fetch()['capa'];//recuperar a capa do id da noticia passada
+		Painel::deleteFile($imagem);//deletar a capa
+		Painel::deletar('tb_site.noticias',$idExcluir);//deleta a noticia do id da moticia passada
+		Painel::redirect(INCLUDE_PATH_PAINEL.'gerenciar-noticias');//redirecionar
+
+		//se for o botao de reordenar
 	}else if(isset($_GET['order']) && isset($_GET['id'])){
 		Painel::orderItem('tb_site.noticias',$_GET['order'],$_GET['id']);
 	}
 
+	//paginação
 	$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 	$porPagina = 4;
 	

@@ -1,8 +1,9 @@
 <?php
-	if(isset($_GET['id'])){
-		$id = (int)$_GET['id'];
-		$slide = Painel::select('tb_site.noticias','id = ?',array($id));
-	}else{
+//AO CLICAR EM EDITAR NA PAGINA GERENCIAR-NOTICIAS
+	if(isset($_GET['id'])){//SE FOR PASSADO ALGUM ID PELO GET
+		$id = (int)$_GET['id'];//CONVERTE O ID PARA INTEIRO
+		$slide = Painel::select('tb_site.noticias','id = ?',array($id));//SELECIONA A NOTICIA PELO ID
+	}else{//SE N FOR PASSADO ALGUM ID PELO GET
 		Painel::alert('erro','Você precisa passar o parametro ID.');
 		die();
 	}
@@ -13,38 +14,42 @@
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-			if(isset($_POST['acao'])){
+			if(isset($_POST['acao'])){//SE O BOTAO Atualizar FOR CLICADO
 				//Enviei o meu formulário.
 				
 				$nome = $_POST['titulo'];
 				$conteudo = $_POST['conteudo'];
 				$imagem = $_FILES['capa'];
 				$imagem_atual = $_POST['imagem_atual'];
+				//para verificar se existe com O MESMO TITULO, CATEGORIA_ID E ID DA NOTICIA
 				$verifica = MySql::conectar()->prepare("SELECT `id` FROM `tb_site.noticias` WHERE titulo = ? AND categoria_id = ? AND id != ?");
 				$verifica->execute(array($nome,$_POST['categoria_id'],$id));
+				//SE O RESULTADO FOR IGUAL A 0, QUER DIZER QUE N EXISTE A NOTICIA NO BD, ENTAO PODEMOS CADASTRAR
 				if($verifica->rowCount() == 0){
-				if($imagem['name'] != ''){
-					//Existe o upload de imagem.
-					if(Painel::imagemValida($imagem)){
-						Painel::deleteFile($imagem_atual);
-						$imagem = Painel::uploadFile($imagem);
-						$slug = Painel::generateSlug($nome);
+				if($imagem['name'] != ''){//SE ARQUIVO FOI PREENCHIDO,Existe o upload de imagem.
+					
+					if(Painel::imagemValida($imagem)){//SE É UMA IMAGEM VÁLIDA
+						Painel::deleteFile($imagem_atual);//DELETA A IMAGEM ATUAL
+						$imagem = Painel::uploadFile($imagem);//ATUALIZA PARA A NOVA IMAGEM
+						$slug = Painel::generateSlug($nome);//GERA UM SLUG
 						$arr = ['titulo'=>$nome,'data'=>date('Y-m-d'),'categoria_id'=>$_POST['categoria_id'],'conteudo'=>$conteudo,'capa'=>$imagem,'slug'=>$slug,'id'=>$id,'nome_tabela'=>'tb_site.noticias'];
-						Painel::update($arr);
+						Painel::update($arr);//ATUALIZA O CAMPO NO BD
+						//RECUPERAR OS VALORES ATUALIZADOS
 						$slide = Painel::select('tb_site.noticias','id = ?',array($id));
 						Painel::alert('sucesso','A notícia foi editada com junto com a imagem!');
-					}else{
+					}else{//SE N É UMA IMAGEM VÁLIDA
 						Painel::alert('erro','O formato da imagem não é válido');
 					}
-				}else{
+				}else{//SE ARQUIVO N FOI PREENCHIDO,ATUALIZA TUDO, MENOS A IMAGEM
 					$imagem = $imagem_atual;
 					$slug = Painel::generateSlug($nome);
 					$arr = ['titulo'=>$nome,'categoria_id'=>$_POST['categoria_id'],'conteudo'=>$conteudo,'capa'=>$imagem,'slug'=>$slug,'id'=>$id,'nome_tabela'=>'tb_site.noticias'];
-					Painel::update($arr);
+					Painel::update($arr);//ATUALIZA O CAMPO NO BD
+					//RECUPERAR OS VALORES ATUALIZADOS
 					$slide = Painel::select('tb_site.noticias','id = ?',array($id));
 					Painel::alert('sucesso','A notícia foi editada com sucesso!');
 				}
-				}else{
+				}else{//SE JA EXISTIR UMA NOTICIA COM ESSE NOME
 					Painel::alert('erro','Já existe uma notícia com este nome!');
 				}
 

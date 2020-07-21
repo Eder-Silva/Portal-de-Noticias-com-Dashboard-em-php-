@@ -28,7 +28,7 @@
 							'order_id'=>'0',
 							'nome_tabela'=>'tb_site.noticias'
 							];		
-							if(Painel::insert($arr)){//SE CONSEGUIR INSERIR, //REDIRECIONA PARA A URL UM GET['SUCESSO']
+							if(Painel::insert($arr)){//SE CONSEGUIR INSERIR, //REDIRECIONA PARA A URL UM GET['SUCESSO'], PARA MOSTRAR O ALERTA DE SUCESSO
 								Painel::redirect(INCLUDE_PATH_PAINEL.'cadastrar-noticia?sucesso');
 							}
 
@@ -46,7 +46,7 @@
 				}
 				
 				
-			}//SE A NOTICIA FOR CADASTRADA com sucesso e o botao cadastrar n foi clicado, APRESENTARA UM ALERTA DE SUCESSO
+			}//SE A NOTICIA FOR CADASTRADA com sucesso e o botao cadastrar n foi clicado(FOI PASSADO PELO redirect), APRESENTARA UM ALERTA DE SUCESSO
 			if(isset($_GET['sucesso']) && !isset($_POST['acao'])){
 				Painel::alert('sucesso','O cadastro foi realizado com sucesso!');
 			}
