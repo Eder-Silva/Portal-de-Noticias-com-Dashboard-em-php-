@@ -5,16 +5,16 @@
 
 		<?php
 
-			if(isset($_POST['acao'])){
+			if(isset($_POST['acao'])){//se o botao cadastrar foi clicado(formulario enviado)
 				$nome = $_POST['nome'];
-				if($nome == ''){
+				if($nome == ''){//se o usuario n inserir o campo nome da categoria
 					Painel::alert('erro','O campo nome não pode ficar vázio!');
-				}else{
+				}else{//caso o usuario inseriu o campo nome
 					//Apenas cadastrar no banco de dados!
 					$verificar = MySql::conectar()->prepare("SELECT * FROM `tb_site.categorias` WHERE nome = ?");
 					$verificar->execute(array($_POST['nome']));
 					if($verificar->rowCount() == 0){
-					$slug = Painel::generateSlug($nome);
+					$slug = Painel::generateSlug($nome);//gerar um slug da categoria
 
 					$arr = ['nome'=>$nome,'slug'=>$slug,'order_id'=>'0','nome_tabela'=>'tb_site.categorias'];
 					Painel::insert($arr);
