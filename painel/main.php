@@ -95,5 +95,14 @@
 <!--jquery.mask PARA FORMATAR DATAS-->
 <script src="<?php echo INCLUDE_PATH_PAINEL ?>js/jquery.mask.js"></script>
 <script src="<?php echo INCLUDE_PATH_PAINEL ?>js/main.js"></script>
+<!-- tinymce-->
+<script src="https://cdn.tiny.cloud/1/4hc16lasam7yi2kh5h166twkilex6pmeulmb46e9nrl2t2ql/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({  
+		selector: '.tinymce',
+		plugins: "image",
+		height: 300
+		});
+</script>
 </body>
 </html>
