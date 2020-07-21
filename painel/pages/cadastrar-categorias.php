@@ -13,12 +13,14 @@
 					//Apenas cadastrar no banco de dados!
 					$verificar = MySql::conectar()->prepare("SELECT * FROM `tb_site.categorias` WHERE nome = ?");
 					$verificar->execute(array($_POST['nome']));
+					//SE O RESULTADO FOR IGUAL A 0, QUER DIZER QUE N EXISTE a categoria  NO BD, ENTAO PODEMOS CADASTRAR
 					if($verificar->rowCount() == 0){
 					$slug = Painel::generateSlug($nome);//gerar um slug da categoria
 
 					$arr = ['nome'=>$nome,'slug'=>$slug,'order_id'=>'0','nome_tabela'=>'tb_site.categorias'];
 					Painel::insert($arr);
 					Painel::alert('sucesso','O cadastro da categoria foi realizado com sucesso!');
+					//SE O RESULTADO FOR IGUAL A 1, QUER DIZER QUE já EXISTE a categoria  NO BD, ENTAO n PODEMOS CADASTRAR
 					}else{
 						Painel::alert("erro",'Já existe uma categoria com este nome!');
 					}

@@ -4,44 +4,49 @@
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-
+			//se o botao cadastrar for clicado
 			if(isset($_POST['acao'])){
 				$categoria_id = $_POST['categoria_id'];
 				$titulo = $_POST['titulo'];
 				$conteudo = $_POST['conteudo'];
 				$capa = $_FILES['capa'];
 
-				if($titulo == '' || $conteudo == ''){
+				if($titulo == '' || $conteudo == ''){//SE TITULO OU CONTEUDO N FOI PREENCHIDO,APRESENTARA ERRO
 					Painel::alert('erro','Campos Vázios não são permitidos!');
-				}else if($capa['tmp_name'] == '' ){
+				}else if($capa['tmp_name'] == '' ){//SE ARQUIVO N FOI PREENCHIDO,APRESENTARA ERRO
 					Painel::alert('erro','A imagem de capa precisa ser selecionada.');
-				}else{
-					if(Painel::imagemValida($capa)){
+				}else{//CASO TODOS OS CAMPOS FORAM PREENCHIDOS
+					if(Painel::imagemValida($capa)){//SE É UMA IMAGEM VÁLIDA
+						//IRA SELECIONAR NO BD o que JA TIVER CADASTRADO com o titulo e categoria_id
 						$verifica = MySql::conectar()->prepare("SELECT * FROM `tb_site.noticias` WHERE titulo=? AND categoria_id = ?");
 						$verifica->execute(array($titulo,$categoria_id));
-						if($verifica->rowCount() == 0){
-						$imagem = Painel::uploadFile($capa);
-						$slug = Painel::generateSlug($titulo);
-						$arr = ['categoria_id'=>$categoria_id,'data'=>date('Y-m-d'),'titulo'=>$titulo,'conteudo'=>$conteudo,'capa'=>$imagem,'slug'=>$slug,
-						'order_id'=>'0',
-						'nome_tabela'=>'tb_site.noticias'
-						];
-						if(Painel::insert($arr)){
-							Painel::redirect(INCLUDE_PATH_PAINEL.'cadastrar-noticia?sucesso');
-						}
+						//SE O RESULTADO FOR IGUAL A 0, QUER DIZER QUE N EXISTE a noticia NO BD, ENTAO PODEMOS CADASTRAR
+						if($verifica->rowCount() == 0){							
+							$imagem = Painel::uploadFile($capa);//faz o upload dO ARQUIVO							
+							$generateSlug = Painel::generateSlug($titulo);//gera um slug
+							$arr = ['categoria_id'=>$categoria_id,'data'=>date('Y-m-d'),'titulo'=>$titulo,'conteudo'=>$conteudo,'capa'=>$imagem,'slug'=>$slug,
+							'order_id'=>'0',
+							'nome_tabela'=>'tb_site.noticias'
+							];		
+							if(Painel::insert($arr)){//SE CONSEGUIR INSERIR, //REDIRECIONA PARA A URL UM GET['SUCESSO']
+								Painel::redirect(INCLUDE_PATH_PAINEL.'cadastrar-noticia?sucesso');
+							}
 
 						//Painel::alert('sucesso','O cadastro da notícia foi realizado com sucesso!');
+
+							//SE O RESULTADO FOR IGUAL A 1 OU MAIOR, QUER DIZER QUE JÁ EXISTE a noticia NO BD, ENTAO NÃO PODEMOS CADASTRAR
 						}else{
+
 							Painel::alert('erro','Já existe uma notícia com esse nome!');
 						}
-					}else{
+					}else{//SE A IMAGEM N E VALIDA
 						Painel::alert('erro','Selecione uma imagem válida!');
 					}
 					
 				}
 				
 				
-			}
+			}//SE A NOTICIA FOR CADASTRADA com sucesso e o botao cadastrar n foi clicado, APRESENTARA UM ALERTA DE SUCESSO
 			if(isset($_GET['sucesso']) && !isset($_POST['acao'])){
 				Painel::alert('sucesso','O cadastro foi realizado com sucesso!');
 			}
