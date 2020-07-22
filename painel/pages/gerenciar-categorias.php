@@ -1,28 +1,30 @@
-<?php
+<?php 
 	//FUNÇÃO PARA CLICAR EM EXCLUIR(EXISTIR GET EXCLUIR)
 	if(isset($_GET['excluir'])){
-		$idExcluir = intval($_GET['excluir']);//PEGA e converte O ID para inteiro
-		Painel::deletar('tb_site.categorias',$idExcluir);//DELETAR CATEGORIA 
+		$idExcluir = intval($_GET['excluir']);//PEGA O NUMERO DO ID
+		//DELETAR CATEGORIA 
+		Painel::deletar('tb_site.categorias',$idExcluir);
 
 		//CASO FOR DELETADO ALGUMA CATEGORIA IRA DELETAR AS NOTICIAS DAQUELA CATEGORIA
-		//SELECIONAR TODAS NOTICIAS DA CATEGORIA 
+
+		//SELECIONAR TODAS NOTICIAS DA CATEGORIA
 		$noticias = MySql::conectar()->prepare("SELECT * FROM `tb_site.noticias` WHERE categoria_id = ?");
 		$noticias->execute(array($idExcluir));
 		$noticias = $noticias->fetchAll();
 		foreach ($noticias as $key => $value) {
 			$imgDelete = $value['capa'];
-			Painel::deleteFile($imgDelete);//deletar o arquivo de imagem
+			//DELETAR O ARQUIVO DE IMAGEM
+			Painel::deleteFile($imgDelete);
 		}
-		//deletar todas as noticias da categoria deletada
+		//DELETAR TODAS NOTICIAS DA CATEGORIA
 		$noticias = MySql::conectar()->prepare("DELETE FROM `tb_site.noticias` WHERE categoria_id = ?");
 		$noticias->execute(array($idExcluir));
+		//REDIRECIONAR PARA A PROPRIA PAGINA
 		Painel::redirect(INCLUDE_PATH_PAINEL.'gerenciar-categorias');
-
 		//CASO SEJA SÓ PARA REORDENAR
 	}else if(isset($_GET['order']) && isset($_GET['id'])){
 		Painel::orderItem('tb_site.categorias',$_GET['order'],$_GET['id']);
 	}
-
 	//PAGINAÇÃO
 	$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 	$porPagina = 4;

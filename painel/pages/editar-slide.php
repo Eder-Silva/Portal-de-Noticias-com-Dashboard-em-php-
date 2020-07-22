@@ -1,9 +1,6 @@
 <?php
-	if(isset($_GET['id'])){ //SE EXISTE O GET ID
-		$id = (int)$_GET['id'];//PEGA O VALOR INTEIRO DO ID 
-		//TABELA->tb_site.depoimentos
-		//QUERY->id = ?
-		//ARR->array($id)
+	if(isset($_GET['id'])){
+		$id = (int)$_GET['id'];
 		$slide = Painel::select('tb_site.slides','id = ?',array($id));
 	}else{
 		Painel::alert('erro','Você precisa passar o parametro ID.');
@@ -16,34 +13,31 @@
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-		//SE BOTA ATUALIZAR FOR CLICADO
-			if(isset($_POST['acao'])){//SE ATALIZAR
+			if(isset($_POST['acao'])){
+				//Enviei o meu formulário.
 				
 				$nome = $_POST['nome'];
 				$imagem = $_FILES['imagem'];
 				$imagem_atual = $_POST['imagem_atual'];
 				
-				//SE FOI SELECIONADA UMA IMAGEM
 				if($imagem['name'] != ''){
-					//SE A IMAGEM E VALIDA
+
+					//Existe o upload de imagem.
 					if(Painel::imagemValida($imagem)){
-						//DELETA A IM,AGEM ATUAL
 						Painel::deleteFile($imagem_atual);
 						$imagem = Painel::uploadFile($imagem);
+						
 						$arr = ['nome'=>$nome,'slide'=>$imagem,'id'=>$id,'nome_tabela'=>'tb_site.slides'];
-						//ATUALIZA A IMAGEM
 						Painel::update($arr);
-						//SELECIONA NOVAMENTE A PAGINA, MAS COM OS ITENS ATUALIZADOS
 						$slide = Painel::select('tb_site.slides','id = ?',array($id));
 						Painel::alert('sucesso','O Slide foi editado junto com a imagem!');
-					}else{//CASO N ATUALIZE
+					}else{
 						Painel::alert('erro','O formato da imagem não é válido');
 					}
-				}else{//SE A IMAGEM N E VALIDA
+				}else{
 					$imagem = $imagem_atual;
 					$arr = ['nome'=>$nome,'slide'=>$imagem,'id'=>$id,'nome_tabela'=>'tb_site.slides'];
 					Painel::update($arr);
-					//SELECIONA NOVAMENTE A PAGINA, MAS COM OS ITENS ATUALIZADOS
 					$slide = Painel::select('tb_site.slides','id = ?',array($id));
 					Painel::alert('sucesso','O Slide foi editado com sucesso!');
 				}

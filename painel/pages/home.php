@@ -1,5 +1,4 @@
 <?php
-
 	$usuariosOnline = Painel::listarUsuariosOnline();
 
 	$pegarVisitasTotais = MySql::conectar()->prepare("SELECT * FROM `tb_admin.visitas`");
@@ -21,7 +20,6 @@
 			<div class="box-metrica-single">
 				<div class="box-metrica-wraper">
 					<h2>Usuários Online</h2>
-					<!--CONTAR A QUANTIDADE TRAZIDA DE listarUsuariosOnline()-->
 					<p><?php echo count($usuariosOnline); ?></p>
 				</div><!--box-metrica-wraper-->
 			</div><!--box-metrica-single-->
@@ -57,7 +55,6 @@
 		</div><!--row-->
 
 		<?php
-		//para pegar todos os valores de ip e ultima_acao no bd
 			foreach ($usuariosOnline as $key => $value) {
 
 		?>
@@ -66,7 +63,6 @@
 				<span><?php echo $value['ip'] ?></span>
 			</div><!--col-->
 			<div class="col">
-				<!--PARA PEGAR ultima_acao DO BD E FORMATALA PARA DATA E HORA DO BR -->
 				<span><?php echo date('d/m/Y H:i:s',strtotime($value['ultima_acao'])) ?></span>
 			</div><!--col-->
 			<div class="clear"></div>

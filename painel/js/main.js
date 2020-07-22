@@ -1,42 +1,44 @@
-//funcao para esconder/mostrar menu do painel 
 $(function(){
-
-	var open  = true;//por padrao o nosso mennu ta sempre aberto
-	//pegar o objeto da janela,[0] é para usar js nativo(.innerWidth ), .innerWidth pega o tamanho da tela com base no viewport
+	
+	var open = true;
+	//o  [0] quer dizer que trabalharemos com as funções nativas do javascript, nesse caso o .innerWidth,
+	// que pega o tamanho real com base no viewport
 	var windowSize = $(window)[0].innerWidth;
-	var targetSizeMenu = (windowSize <= 400) ? 200 : 250;
 
-	if(windowSize <= 768){
-		$('.menu').css('width','0').css('padding','0');
-		open = false;//menu fechado
+	var targetSizeMenu = (windowSize <= 400) ? 200 : 300;
+
+	if (windowSize <= 768) {
+		$('.menu').css('width','0').css('padding','0');		
+		open = false;
 	}
 
 	$('.menu-btn').click(function(){
-		if(open){
-			//O menu está aberto, precisamos fechar e adaptar nosso conteudo geral do painel
-			//esconde o menu 
+		
+		if (open) {
+			//o menu esta aberto,precisamos fechar e adaptar o conteudo geral do painel			
 			$('.menu').animate({'width':0,'padding':0},function(){
-				open = false;//menu fechado
+				open = false;
 			});
-			//aumenta a largura do conteudo e o header
 			$('.content,header').css('width','100%');
 			$('.content,header').animate({'left':0},function(){
-				open = false;//menu fechado
+				open = false;
 			});
+
 		}else{
-			//O menu está fechado, entao vamos abrir
+			//o menu esta fechado
 			$('.menu').css('display','block');
-			$('.menu').animate({'width':targetSizeMenu+'px','padding':'10px 0'},function(){
-				open = true;//menu aberto
+			$('.menu').animate({'width':targetSizeMenu+'px','padding':'10px'},function(){
+				open = true;
 			});
-			if(windowSize > 768)
-				$('.content,header').css('width','calc(100% - 250px)');
-				$('.content,header').animate({'left':targetSizeMenu+'px'},function(){
-				open = true;//menu aberto
+			//$('.content,header').css('width','calc(100% - 300px)');
+			$('.content,header').animate({'left':targetSizeMenu+'px'},function(){
+				open = true;
 			});
+
 		}
+
 	})
-	//para caso o cliente redimensione a tela
+
 	$(window).resize(function(){
 		windowSize = $(window)[0].innerWidth;
 		targetSizeMenu = (windowSize <= 400) ? 200 : 250;
@@ -57,18 +59,18 @@ $(function(){
 
 	})
 
-	$('[formato=data]').mask('99/99/9999');//JQUERY MASK,PARA FORMATAR DATAS
+	//atributo para formato de data utilizando o jquery mask
+	$('[formato=data]').mask('99/99/9999');
 
-	//MOSTAR UMA CAIXA DE DIALOGO AO EXCLUIR 
+	//caixa de confirmação de exclusão
 	$('[actionBtn=delete]').click(function(){
-			var txt;
-			var r = confirm("Deseja excluir o registro?");
-			if (r == true) {//PODE EXCLUIR
-			    return true;
-			} else {//CANCELAR A EXCLUSAO
-			    return false;
-			}
+		var txt;
+		var r = confirm("Deseja excluir o registro?");
+		if (r == true) {
+		    return true;
+		} else {
+		    return false;
+		}
 	})
-
 
 })

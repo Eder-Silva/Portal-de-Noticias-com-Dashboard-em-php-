@@ -263,7 +263,7 @@ table{
 	border-collapse: collapse;
 }
 
-table tr:nth-of-type(1){/* ------- pegar o primeiro da tabela -------- */ 
+table tr:nth-of-type(1){          /*primeiro da tabela*/
 	background: #0091ea;
 	color: white;
 }
@@ -330,11 +330,11 @@ a.btn.order{background: #0091ea;}
 	border: 5px solid white;
 }
 
-.box-metricas .box-metrica-single:nth-of-type(2){
+.box-metricas .box-metrica-single:nth-of-type(2){    	 /*segundo*/
 	background: #E05C4E;
 }
 
-.box-metricas .box-metrica-single:nth-of-type(3){
+.box-metricas .box-metrica-single:nth-of-type(3){		/*terceiro*/
 	background: #0091ea;
 }
 
@@ -360,7 +360,7 @@ a.btn.order{background: #0091ea;}
 	font-weight: 300;
 }
 
-.table-responsive .row:nth-of-type(1){
+.table-responsive .row:nth-of-type(1){			/*primeiro da tabela*/
 	font-weight: normal;
 	background: #00bfa5;
 	padding: 10px;
@@ -418,8 +418,7 @@ a.btn.order{background: #0091ea;}
 	height: 150px;
 	border: 1px solid #ccc;
 	padding: 8px;
-	resize: vertical;/* ---- REDIMENSIONAR SO NA VERTICAL(CIMA/BAIXO) --------*/
-
+	resize: vertical;
 }
 
 .box-content form select{
@@ -477,7 +476,7 @@ a.btn.order{background: #0091ea;}
 .menu-active::before{
 	/*
 		Adicionar Seta para qd estiver selecionado.
-	*/
+	*/	
 }
 
 
@@ -489,7 +488,7 @@ a.btn.order{background: #0091ea;}
 	color: black;
 }
 
-form .form-group-login:nth-of-type(2){
+form .form-group-login:nth-of-type(2){				/*segundo*/
 	position: relative;
 	top: 10px;
 }

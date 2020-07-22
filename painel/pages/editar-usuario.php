@@ -1,11 +1,9 @@
 <div class="box-content">
 	<h2><i class="fa fa-pencil"></i> Editar Usuário</h2>
 
-	<!--multipart/form-data PARA UPLOAD DE IMAGENS -->
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-		//SE EXISTIR A ACAO
 			if(isset($_POST['acao'])){
 				//Enviei o meu formulário.
 				
@@ -14,32 +12,26 @@
 				$imagem = $_FILES['imagem'];
 				$imagem_atual = $_POST['imagem_atual'];
 				$usuario = new Usuario();
-
-				//VERIFICAR SE ALGUMA IMAGEM FOI SELECIONADA
-				//ALGUMA IMAGEM FOI SELECIONADA
 				if($imagem['name'] != ''){
-					//SE O TIPO DA IMAGEM É VÁLIDA(JPG,JPG,ETC)
+
+					//Existe o upload de imagem.
 					if(Painel::imagemValida($imagem)){
-						//DELETA A IMAGEM ANTIGA
 						Painel::deleteFile($imagem_atual);
 						$imagem = Painel::uploadFile($imagem);
 						if($usuario->atualizarUsuario($nome,$senha,$imagem)){
-							$_SESSION['img'] = $imagem;//APARECER A NOVA IMAGEM
+							$_SESSION['img'] = $imagem;
 							Painel::alert('sucesso','Atualizado com sucesso junto com a imagem!');
 						}else{
 							Painel::alert('erro','Ocorreu um erro ao atualizar junto com a imagem');
 						}
 					}else{
-						Painel::alert('erro','O formato da imagem não é válido');
+						Painel::alert('erro','O formato da imagem não é válida');
 					}
-
-				//NÃO TEM IMAGEM SELECIONADA	
 				}else{
-					$imagem = $imagem_atual;//A IMAGEM SERA NOSSA IMAGEM ATUAL
-					//SE USUARIO FOI EDITADO COM SUCESSO
+					$imagem = $imagem_atual;
 					if($usuario->atualizarUsuario($nome,$senha,$imagem)){
 						Painel::alert('sucesso','Atualizado com sucesso!');
-					}else{//CASO O USUARO NÃO FOI EDITADO COM SUCESSO
+					}else{
 						Painel::alert('erro','Ocorreu um erro ao atualizar...');
 					}
 				}

@@ -1,8 +1,8 @@
-<?php
-//AO CLICAR EM EDITAR NA PAGINA GERENCIAR-NOTICIAS
-	if(isset($_GET['id'])){//SE FOR PASSADO ALGUM ID PELO GET
+<?php 
+	//SE FOR PASSADO ALGUM ID PELO GET
+	if(isset($_GET['id'])){
 		$id = (int)$_GET['id'];//CONVERTE O ID PARA INTEIRO
-		$slide = Painel::select('tb_site.noticias','id = ?',array($id));//SELECIONA A NOTICIA PELO ID
+		$slide = Painel::select('tb_site.noticias','id = ?',array($id));//SELECIONA O ID
 	}else{//SE N FOR PASSADO ALGUM ID PELO GET
 		Painel::alert('erro','Você precisa passar o parametro ID.');
 		die();
@@ -14,24 +14,24 @@
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-			if(isset($_POST['acao'])){//SE O BOTAO Atualizar FOR CLICADO
-				//Enviei o meu formulário.
+		//SE O BOTAO Atualizar FOR CLICADO
+			if(isset($_POST['acao'])){
 				
 				$nome = $_POST['titulo'];
 				$conteudo = $_POST['conteudo'];
 				$imagem = $_FILES['capa'];
 				$imagem_atual = $_POST['imagem_atual'];
-				//para verificar se existe com O MESMO TITULO, CATEGORIA_ID E ID DA NOTICIA
+				//para verificar se existe com O MESMO TITULO, CATEGORIA_ID E ID
 				$verifica = MySql::conectar()->prepare("SELECT `id` FROM `tb_site.noticias` WHERE titulo = ? AND categoria_id = ? AND id != ?");
 				$verifica->execute(array($nome,$_POST['categoria_id'],$id));
 				//SE O RESULTADO FOR IGUAL A 0, QUER DIZER QUE N EXISTE A NOTICIA NO BD, ENTAO PODEMOS CADASTRAR
 				if($verifica->rowCount() == 0){
-				if($imagem['name'] != ''){//SE ARQUIVO FOI PREENCHIDO,Existe o upload de imagem.
+				if($imagem['name'] != ''){//SE ARQUIVO FOI PREENCHIDO,APRESENTARA SUCESSO
 					
 					if(Painel::imagemValida($imagem)){//SE É UMA IMAGEM VÁLIDA
 						Painel::deleteFile($imagem_atual);//DELETA A IMAGEM ATUAL
 						$imagem = Painel::uploadFile($imagem);//ATUALIZA PARA A NOVA IMAGEM
-						$slug = Painel::generateSlug($nome);//GERA UM SLUG
+						$slug = Painel::generateSlug($nome);
 						$arr = ['titulo'=>$nome,'data'=>date('Y-m-d'),'categoria_id'=>$_POST['categoria_id'],'conteudo'=>$conteudo,'capa'=>$imagem,'slug'=>$slug,'id'=>$id,'nome_tabela'=>'tb_site.noticias'];
 						Painel::update($arr);//ATUALIZA O CAMPO NO BD
 						//RECUPERAR OS VALORES ATUALIZADOS

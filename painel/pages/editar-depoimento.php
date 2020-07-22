@@ -1,30 +1,25 @@
 <?php 
-
-	if(isset($_GET['id'])){//SE EXISTE O GET ID
-		$id = (int)$_GET['id'];//PEGA O VALOR INTEIRO DO ID 
-		//TABELA->tb_site.depoimentos
-		//QUERY->id = ?
-		//ARR->array($id)
+	if(isset($_GET['id'])){
+		//recuperando o id
+		$id = (int)$_GET['id'];
 		$depoimento = Painel::select('tb_site.depoimentos','id = ?',array($id));
 	}else{
-		Painel::alert('erro','Você precisa passar o parametro ID.'); 
+		Painel::alert('erro','Você precisa passar o parametro ID.');
 		die();
 	}
  ?>
+
 <div class="box-content">
 	<h2><i class="fa fa-pencil"></i> Editar Depoimento</h2>
 
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-		//SE BOTA ATUALIZAR FOR CLICADO
 			if(isset($_POST['acao'])){
-				//SE ATALIZAR
 				if(Painel::update($_POST)){
 					Painel::alert('sucesso','O depoimento foi editado com sucesso!');
-					//SELECIONA NOVAMENTE A PAGINA, MAS COM OS ITENS ATUALIZADOS
 					$depoimento = Painel::select('tb_site.depoimentos','id = ?',array($id));
-				}else{//CASO N ATUALIZE
+				}else{
 					Painel::alert('erro','Campos vázios não são permitidos.');
 				}
 			}

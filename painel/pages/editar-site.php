@@ -8,14 +8,11 @@
 	<form method="post" enctype="multipart/form-data">
 
 		<?php
-		//SE BOTA ATUALIZAR FOR CLICADO
 			if(isset($_POST['acao'])){
-				//SE ATALIZAR
 				if(Painel::update($_POST,true)){
 					Painel::alert('sucesso','O site foi editado com sucesso!');
-					//SELECIONA NOVAMENTE A PAGINA, MAS COM OS ITENS ATUALIZADOS
 					$site = Painel::select('tb_site.config',false);
-				}else{//CASO N ATUALIZE
+				}else{
 					Painel::alert('erro','Campos vázios não são permitidos.');
 				}
 			}

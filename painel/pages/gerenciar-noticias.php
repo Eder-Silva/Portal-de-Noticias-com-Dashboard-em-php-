@@ -1,15 +1,15 @@
-<?php
-//FUNÇÃO PARA CLICAR EM EXCLUIR(EXISTIR GET EXCLUIR)
-	if(isset($_GET['excluir'])){
-		$idExcluir = intval($_GET['excluir']);//pegar o id e converter para inteiro
-		//selecionar a imagem(capa) do id da noticia passada
+<?php 
+
+	if(isset($_GET['excluir'])){//FUNÇÃO PARA CLICAR EM EXCLUIR(EXISTIR GET EXCLUIR)
+		$idExcluir = intval($_GET['excluir']);//pegar o id
+		//selecionar a imagem(capa)
 		$selectImagem = MySql::conectar()->prepare("SELECT capa FROM `tb_site.noticias` WHERE id = ?");
 		$selectImagem->execute(array($_GET['excluir']));
 
-		$imagem = $selectImagem->fetch()['capa'];//recuperar a capa do id da noticia passada
+		$imagem = $selectImagem->fetch()['capa'];//recuperar a capa
 		Painel::deleteFile($imagem);//deletar a capa
-		Painel::deletar('tb_site.noticias',$idExcluir);//deleta a noticia do id da moticia passada
-		Painel::redirect(INCLUDE_PATH_PAINEL.'gerenciar-noticias');//redirecionar
+		Painel::deletar('tb_site.noticias',$idExcluir);//deleta a noticia
+		Painel::redirect(INCLUDE_PATH_PAINEL.'gerenciar-noticias');////redirecionar
 
 		//se for o botao de reordenar
 	}else if(isset($_GET['order']) && isset($_GET['id'])){
@@ -45,9 +45,13 @@
 			<td><?php echo $value['titulo']; ?></td>
 			<td><?php echo $nomeCategoria; ?></td>
 			<td><img style="width: 50px;height:50px;" src="<?php echo INCLUDE_PATH_PAINEL ?>uploads/<?php echo $value['capa']; ?>" /></td>
+
 			<td><a class="btn edit" href="<?php echo INCLUDE_PATH_PAINEL ?>editar-noticia?id=<?php echo $value['id']; ?>"><i class="fa fa-pencil"></i> Editar</a></td>
+
 			<td><a actionBtn="delete" class="btn delete" href="<?php echo INCLUDE_PATH_PAINEL ?>gerenciar-noticias?excluir=<?php echo $value['id']; ?>"><i class="fa fa-times"></i> Excluir</a></td>
+
 			<td><a class="btn order" href="<?php echo INCLUDE_PATH_PAINEL ?>gerenciar-noticias?order=up&id=<?php echo $value['id'] ?>"><i class="fa fa-angle-up"></i></a></td>
+			
 			<td><a class="btn order" href="<?php echo INCLUDE_PATH_PAINEL ?>gerenciar-noticias?order=down&id=<?php echo $value['id'] ?>"><i class="fa fa-angle-down"></i></a></td>
 		</tr>
 

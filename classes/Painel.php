@@ -77,15 +77,15 @@
 
 		public static function imagemValida($imagem){
 			//SE O TIPO DA IMAGEM FOR JPG OU JPG OU PNG 
-			if($imagem['type'] == 'image/jpeg' ||
-				$imagem['type'] == 'imagem/jpg' ||
-				$imagem['type'] == 'imagem/png'){
+			if($imagem['type'] == 'image/jpeg' || 
+				$imagem['type'] == 'image/jpg' ||
+				$imagem['type'] == 'image/png'){
 
 				//VERIFICAR SE O TAMANHO DA IMAGEM E VALIDA
 				//CONVERTER BYTES PARA KBYTES E ARREDONDAR PARA INTEIRO
 				$tamanho = intval($imagem['size']/1024);
 				//SE O TAMANHO FOR MENOR QUE 300KB
-				if($tamanho < 300)
+				if($tamanho < 600)
 					return true;
 				else
 					return false;
